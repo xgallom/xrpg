@@ -9,6 +9,6 @@
 
 using resource = int;
 using attribute = int;
-using index = size_t;
+using id = size_t;
 
 #endif //XRPG_PROPERTY_H

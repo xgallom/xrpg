@@ -17,7 +17,7 @@ namespace String
 	template<size_t MaxSize, bool ... Cmps (int)>
 	inline void update(std::string &str, int input)
 	{
-		if(input == '\b') {
+		if(input == '\b' || input == '\x7f') {
 			if(!str.empty())
 				str.pop_back();
 		}

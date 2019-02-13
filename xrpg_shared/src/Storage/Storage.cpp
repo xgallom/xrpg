@@ -38,7 +38,12 @@ namespace Storage
 	}
 
 	namespace Save {
-		bool store(const ::Save &d) { return ::Storage::store("save.bin", d); }
+		bool store(const ::Save &save) { return ::Storage::store("save.bin", save); }
 		Result<::Save> restore() { return ::Storage::restore<::Save>("save.bin"); }
+	}
+
+	namespace Level {
+		bool store(const ::Level &level) { return ::Storage::store("map.bin", level); }
+		Result<::Level> restore() { return ::Storage::restore<::Level>("map.bin"); }
 	}
 }

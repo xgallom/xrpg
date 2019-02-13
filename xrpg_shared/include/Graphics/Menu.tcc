@@ -12,7 +12,7 @@ void Menu<M, N>::render(int activeIndex) const
 {
 	constexpr Coords size = {EntrySize, Size};
 
-	constexpr auto tl = center(size);
+	const auto tl = center(size);
 
 	Coords::value_type i = 0;
 	for(const auto &menuEntry : *this) {

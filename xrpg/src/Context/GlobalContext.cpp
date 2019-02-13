@@ -5,6 +5,7 @@
 #include "GlobalContext.h"
 
 #include <Data/Player.h>
+#include <Data/Map.h>
 
 namespace GlobalContext
 {
@@ -20,5 +21,12 @@ namespace GlobalContext
 		static Player s_player = Player{};
 
 		return s_player;
+	}
+
+	Map &map()
+	{
+		static Map s_map = Map{};
+
+		return s_map;
 	}
 }

@@ -11,7 +11,7 @@ namespace GlobalState
 		MainMenu = 0,
 		NewGame,
 		LoadGame,
-		Load,
+		LoadLevel,
 		Quit,
 
 		Size
@@ -19,11 +19,13 @@ namespace GlobalState
 }
 
 class Player;
+class Map;
 
 namespace GlobalContext
 {
 	GlobalState::Enum &state();
 	Player &player();
+	Map &map();
 }
 
 #endif //XRPG_GLOBALCONTEXT_H

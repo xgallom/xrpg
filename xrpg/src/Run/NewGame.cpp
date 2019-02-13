@@ -6,7 +6,7 @@
 
 #include "Context/GlobalContext.h"
 
-#include <Console/Console.h>
+#include <Console/ConsoleInput.h>
 #include <Data/Player.h>
 #include <Graphics/Border.h>
 #include <Graphics/OutputBuffer.h>
@@ -30,8 +30,6 @@ namespace Run {
 
 	static constexpr Coords InputSize = {24, 9};
 	static constexpr size_t PromptSize = 12, MaxSize = 12;
-	static constexpr auto TopLeft = center(InputSize);
-	static constexpr auto Center = TopLeft + Coords{PromptSize, 0};
 
 	static constexpr char Prompts[][PromptSize + 1] = {
 			"Name:       ",
@@ -54,7 +52,7 @@ namespace Run {
 	static ColorAttribute color(bool primary);
 
 	template<Index I>
-	static void slider(attribute value)
+	static void slider(attribute value, Coords tl)
 	{
 		const auto color = Color{
 			value <= AttribWeak ? Color::Red : (value >= AttribStrong ? Color::Green : Color::White),
@@ -62,7 +60,7 @@ namespace Run {
 		};
 
 		Input::slider(
-				TopLeft + Coords{0, static_cast<Coords::value_type>(3 + I)},
+				tl + Coords{0, static_cast<Coords::value_type>(3 + I)},
 				Color::White,
 				color,
 				Prompts[I],
@@ -78,24 +76,27 @@ namespace Run {
 	{
 		border();
 
+		const auto tl = center(InputSize);
+		const auto ctr = tl + Coords{PromptSize, 0};
+
 		const auto &player = GlobalContext::player();
 		const auto &name = player.name;
 		const auto &attrib = player.attrib;
 
 		Input::text(
-				TopLeft,
+				tl,
 				Color::White,
 				s_activeIndex == Name ? Color::LWhite : Color::White,
 				Prompts[Name],
 				PromptSize, name
 		);
 		write(
-				Center + Coords{static_cast<Coords::value_type>(name.size()), 0},
+				ctr + Coords{static_cast<Coords::value_type>(name.size()), 0},
 				Character(' ', ColorAttribute::Background(s_activeIndex == Name ? Color::LWhite : Color::Black))
 		);
 
 		Input::slider(
-				TopLeft + Coords{0, 2},
+				tl + Coords{0, 2},
 				Color::White,
 				Color::White,
 				Prompts[Remaining],
@@ -106,18 +107,18 @@ namespace Run {
 				Max
 		);
 
-		slider<Strength>(attrib.str);
-		slider<Agility> (attrib.agi);
-		slider<Stamina> (attrib.sta);
+		slider<Strength>(attrib.str, tl);
+		slider<Agility> (attrib.agi, tl);
+		slider<Stamina> (attrib.sta, tl);
 
 		Input::button(
-				TopLeft + Coords{0, 8},
+				tl + Coords{0, 8},
 				Color{name.empty() ? Color::Red : Color::White, s_activeIndex == Accept},
 				Prompts[Accept],
 				PromptSize
 		);
 		Input::button(
-				TopLeft + Coords{PromptSize, 8},
+				tl + Coords{PromptSize, 8},
 				color(s_activeIndex == Cancel),
 				Prompts[Cancel],
 				PromptSize
@@ -170,7 +171,7 @@ namespace Run {
 
 			case Accept:
 				if(!name.empty()) {
-					GlobalContext::state() = GlobalState::Load;
+					GlobalContext::state() = GlobalState::LoadLevel;
 				}
 				break;
 

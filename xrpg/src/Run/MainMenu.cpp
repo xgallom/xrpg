@@ -6,7 +6,7 @@
 
 #include "Context/GlobalContext.h"
 
-#include <Console/Console.h>
+#include <Console/ConsoleInput.h>
 #include <Graphics/Menu.h>
 
 namespace Run
@@ -21,7 +21,11 @@ namespace Run
 
 	static constexpr auto First = NewGame, Last = Quit;
 
-	static constexpr Menu<Size, 10> MainMenuMenu = {"New Game", "Load Game", "Quit"};
+	static constexpr Menu<Size, 9> MainMenuMenu = {
+			"New Game ",
+			"Load Game",
+			"Quit     "
+	};
 
 	static int s_activeIndex = NewGame;
 
@@ -49,6 +53,7 @@ namespace Run
 				break;
 
 			case '5':
+			case '\n':
 			case '\r':
 				handle();
 				break;

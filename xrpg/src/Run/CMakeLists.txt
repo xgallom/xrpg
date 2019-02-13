@@ -1,8 +1,8 @@
 set(src ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(Run
-        ${src}/Load.cpp
         ${src}/LoadGame.cpp
+        ${src}/LoadLevel.cpp
         ${src}/MainMenu.cpp
         ${src}/NewGame.cpp
         ${src}/Run.cpp

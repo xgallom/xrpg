@@ -53,6 +53,12 @@ struct ColorAttribute
 	{}
 
 	static constexpr ColorAttribute Background(Color bg) { return ColorAttribute(bg, bg); }
+
+	constexpr value_type fg() const { return value & static_cast<value_type>(0x07); }
+	constexpr value_type bg() const { return (value >> 4) & static_cast<value_type>(0x07); }
+
+	constexpr bool brightFg() const { return (value & 0x08) != 0; }
+	constexpr bool brightBg() const { return (value & 0x80) != 0; }
 };
 
 #endif //XRPG_COLOR_H

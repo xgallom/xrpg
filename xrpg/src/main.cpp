@@ -11,5 +11,7 @@ int main()
 
 	while(Run::run()) {}
 
+	Run::deinit();
+
 	return EXIT_SUCCESS;
 }

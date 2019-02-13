@@ -6,6 +6,7 @@
 #define XRPG_STORAGE_H
 
 #include "Save.h"
+#include "Level.h"
 
 namespace Storage
 {
@@ -26,6 +27,11 @@ namespace Storage
 	namespace Save {
 		bool store(const ::Save &save);
 		Result<::Save> restore();
+	}
+
+	namespace Level {
+		bool store(const ::Level &level);
+		Result<::Level> restore();
 	}
 }
 

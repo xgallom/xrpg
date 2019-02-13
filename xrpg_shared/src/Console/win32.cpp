@@ -5,7 +5,6 @@
 #include "Console/Console.h"
 
 #include <windows.h>
-#include <iostream>
 
 namespace Console
 {
@@ -79,16 +78,6 @@ namespace Console
 		SetConsoleCursorPosition(s_output, fromCoords(coords));
 	}
 
-	void write(char c)
-	{
-		write(&c, 1);
-	}
-
-	void write(const char str[])
-	{
-		write(str, strlen(str));
-	}
-
 	void write(const char *str, size_t size)
 	{
 		DWORD written;
@@ -109,33 +98,6 @@ namespace Console
 		ReadConsole(s_input, &input, 1, &read, nullptr);
 
 		return read ? input : 0;
-	}
-
-	std::string read(size_t max)
-	{
-		std::string input;
-
-		write('\xdb');
-
-		int c;
-		while((c = get()) != 13) {
-			if(c == '\b') {
-				if(!input.empty()) {
-					write("\b \b\b\xdb");
-					input.pop_back();
-				}
-			}
-			else if(input.size() < max) {
-				char str[] = "\b \xdb";
-				str[1] = static_cast<char>(c);
-
-				write(str);
-
-				input.push_back(static_cast<char>(c));
-			}
-		}
-
-		return input;
 	}
 
 	static constexpr COORD fromCoords(Coords coords)

@@ -8,6 +8,8 @@
 #include "Stats.h"
 #include "Attributes.h"
 
+#include "Graphics/Coords.h"
+
 #include <string>
 
 static constexpr attribute
@@ -20,11 +22,13 @@ static constexpr attribute
 struct Player {
 	std::string name = std::string{};
 
-	Stat
-		hp = Stat{},
-		xp = Stat{};
+	Coords pos = {};
 
-	Attributes attrib = Attributes{AttribDefault, AttribDefault, AttribDefault};
+	Stat
+		hp = {},
+		xp = {};
+
+	Attributes attrib = {AttribDefault, AttribDefault, AttribDefault};
 };
 
 #endif //XRPG_PLAYER_H

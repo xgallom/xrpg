@@ -7,7 +7,7 @@
 #include "MainMenu.h"
 #include "NewGame.h"
 #include "LoadGame.h"
-#include "Load.h"
+#include "LoadLevel.h"
 
 #include "Context/GlobalContext.h"
 
@@ -17,7 +17,7 @@ namespace Run
 {
 	bool init()
 	{
-		return OutputBuffer::init();
+		return OutputBuffer::init({80, 25});
 	}
 
 	template<typename T>
@@ -40,13 +40,18 @@ namespace Run
 	bool run()
 	{
 		static constexpr bool (* const runTable[GlobalState::Size]) (void) = {
-				&run<MainMenu>,
-				&run<NewGame >,
-				&run<LoadGame>,
-				&run<Load    >,
+				&run<MainMenu >,
+				&run<NewGame  >,
+				&run<LoadGame >,
+				&run<LoadLevel>,
 				&quit
 		};
 
 		return (*runTable[GlobalContext::state()])();
+	}
+
+	void deinit()
+	{
+		OutputBuffer::deinit();
 	}
 }

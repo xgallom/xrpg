@@ -23,7 +23,7 @@ static void cols(Coords tl, Coords::value_type length, Character ch)
 
 void border(ColorAttribute colorAttribute)
 {
-	border({{0, 0}, OutputBuffer::Size - Coords{0, 0}}, colorAttribute);
+	border({{0, 0}, OutputBuffer::size() - Coords{0, 0}}, colorAttribute);
 }
 
 void border(Region region, ColorAttribute colorAttribute)

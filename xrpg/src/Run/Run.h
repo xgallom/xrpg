@@ -9,6 +9,7 @@ namespace Run
 {
 	bool init();
 	bool run();
+	void deinit();
 }
 
 #endif //XRPG_RUN_H
