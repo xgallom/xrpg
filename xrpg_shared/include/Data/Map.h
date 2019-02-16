@@ -17,6 +17,9 @@ struct Map {
 
 	Map() = default;
 	explicit Map(Coords a_size) : size(a_size) { data.resize(a_size.area()); }
+
+	inline const Character &at(Coords pos) const { return data[static_cast<size_t>(pos.y) * size.y + pos.x]; }
+	inline Character &at(Coords pos) { return data[static_cast<size_t>(pos.y) * size.y + pos.x]; }
 };
 
 #endif //XRPG_MAP_H

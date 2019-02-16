@@ -47,7 +47,7 @@ namespace Run
 
 		const auto isActive = GlobalContext::state() == GlobalState::Menu;
 
-		border({tl, br}, ColorAttribute::Background(isActive ? Color::LWhite : Color::White));
+		border({tl, br}, ColorAttribute::Background(isActive ? Color::LBlue : Color::White));
 
 		EditorMenuMenu.renderHorizontal(tl + Coords{1, 1}, isActive ? s_activeIndex : Invalid);
 	}
@@ -79,6 +79,28 @@ namespace Run
 			case '\n':
 				handle(s_activeIndex);
 				break;
+
+			case 'n':
+			case 'N':
+				handle(New);
+				break;
+
+			case 's':
+			case 'S':
+				handle(Save);
+				break;
+
+			case 'o':
+			case 'O':
+				handle(Open);
+				break;
+
+			case 'x':
+			case 'X':
+			case 'q':
+			case 'Q':
+				handle(Exit);
+				break;
 		}
 	}
 
@@ -91,21 +113,10 @@ namespace Run
 	static void handle(int activeIndex)
 	{
 		switch(activeIndex) {
-			case New:
-				NewMap::transit();
-				break;
-
-			case Save:
-				SaveMap::transit();
-				break;
-
-			case Open:
-				OpenMap::transit();
-				break;
-
-			case Exit:
-				quit();
-				break;
+			case New : NewMap::transit();  break;
+			case Save: SaveMap::transit(); break;
+			case Open: OpenMap::transit(); break;
+			case Exit: quit();             break;
 		}
 	}
 }

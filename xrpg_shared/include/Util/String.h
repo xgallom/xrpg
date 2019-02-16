@@ -19,7 +19,10 @@ namespace String
 	constexpr bool isUpper(int input) { return input >= 'A' && input <= 'Z'; }
 	constexpr bool isChar (int input) { return isLower(input) || isUpper(input); }
 	constexpr bool isNum  (int input) { return input >= '0' && input <= '9'; }
+	constexpr bool isHex  (int input) { return isNum(input) || (input >= 'a' && input <= 'f'); }
 	constexpr bool isFile (int input) { return isChar(input) || isNum(input) || input == '.'; }
+
+	constexpr int  fromHex(int input) { return isNum(input) ? input - '0' : input - 'a'; }
 
 	template<size_t MaxSize, bool ... Cmps (int)>
 	inline void update(std::string &str, int input)

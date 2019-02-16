@@ -12,10 +12,16 @@
 namespace Input
 {
 	void text(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
-			  size_t promptSize, const std::string &value)
+			  size_t promptSize, const std::string &value, bool isActive)
 	{
 		write(pos, promptColor, prompt, promptSize);
 		write(pos + Coords{static_cast<Coords::value_type>(promptSize), 0}, valueColor, value.c_str(), value.size());
+		if(isActive) {
+			write(
+					pos + Coords{static_cast<Coords::value_type>(promptSize + value.size()), 0},
+					Character(' ', valueColor.toBg())
+			);
+		}
 	}
 
 	void slider(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
@@ -37,7 +43,7 @@ namespace Input
 	}
 
 	void integer(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
-				 size_t promptSize, int value)
+				 size_t promptSize, int value, bool drawCursor)
 	{
 		std::stringstream ss;
 		ss << value;
@@ -46,6 +52,8 @@ namespace Input
 
 		write(pos, promptColor, prompt, promptSize);
 		write(pos + Coords{static_cast<Coords::value_type>(promptSize), 0}, valueColor, str.c_str(), str.size());
+		if(drawCursor)
+			write(pos + Coords{static_cast<Coords::value_type>(promptSize + str.size()), 0}, Character{' ', valueColor.toBg()});
 	}
 
 	void button(Coords pos, ColorAttribute color, const char text[], size_t textSize)

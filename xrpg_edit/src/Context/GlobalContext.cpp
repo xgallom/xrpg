@@ -30,6 +30,13 @@ namespace GlobalContext
 		return s_map;
 	}
 
+	Coords &pos()
+	{
+		static Coords s_pos = {};
+
+		return s_pos;
+	}
+
 	std::string &fileName()
 	{
 		static std::string s_fileName = {};

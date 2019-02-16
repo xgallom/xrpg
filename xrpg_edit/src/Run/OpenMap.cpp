@@ -19,6 +19,7 @@ namespace Run
 				return false;
 
 			GlobalContext::map() = std::move(level().map);
+			GlobalContext::pos() = Coords{};
 
 			return true;
 		}

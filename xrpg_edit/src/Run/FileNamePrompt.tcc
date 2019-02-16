@@ -23,7 +23,7 @@ namespace Run
 		const auto region = Region{tl - Coords{1, 1}, tl + InputSize + Coords{2, 3}};
 
 		OutputBuffer::clear(region);
-		border(region);
+		border(region, ColorAttribute::Background(Color::LBlue));
 
 		const auto &fileName = GlobalContext::fileName();
 
@@ -39,11 +39,8 @@ namespace Run
 					s_activeIndex == FileName ? Color::LWhite : Color::White,
 					Prompts[FileName],
 					PromptSize,
-					fileName
-			);
-			write(
-					ctr + Coords{static_cast<Coords::value_type>(fileName.size()), 1},
-					Character(' ', ColorAttribute::Background(s_activeIndex == FileName ? Color::LWhite : Color::Black))
+					fileName,
+					s_activeIndex == FileName
 			);
 
 			Input::button(

@@ -50,7 +50,7 @@ namespace Run
 		const auto region = Region{tl - Coords{1, 1}, tl + InputSize + Coords{1, 3}};
 
 		OutputBuffer::clear(region);
-		border(region);
+		border(region, ColorAttribute::Background(Color::LBlue));
 
 		Input::integer(
 				tl + Coords{0, 1},
@@ -58,7 +58,8 @@ namespace Run
 				s_activeIndex == Width ? Color::LWhite : Color::White,
 				Prompts[Width],
 				PromptSize,
-				s_mapSize.x
+				s_mapSize.x,
+				s_activeIndex == Width
 		);
 		Input::integer(
 				tl + Coords{0, 2},
@@ -66,7 +67,8 @@ namespace Run
 				s_activeIndex == Height ? Color::LWhite : Color::White,
 				Prompts[Height],
 				PromptSize,
-				s_mapSize.y
+				s_mapSize.y,
+				s_activeIndex == Height
 		);
 
 		Input::button(
@@ -88,14 +90,14 @@ namespace Run
 		switch(c) {
 			case 's':
 			case 'd':
-			case '<':
+			case '>':
 				if(s_activeIndex < Last)
 					++s_activeIndex;
 				break;
 
 			case 'w':
 			case 'a':
-			case '>':
+			case '<':
 				if(s_activeIndex > First)
 					--s_activeIndex;
 				break;

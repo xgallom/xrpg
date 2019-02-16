@@ -18,6 +18,12 @@ struct Character {
 	{}
 
 	constexpr bool operator!=(Character r) const { return value != r.value; }
+
+	constexpr char ch() const { return static_cast<char>(value & 0xff); }
+	constexpr ColorAttribute ca() const { return value >> 8; }
+
+	void setCh(char c) { value = static_cast<value_type>(c) | (value & static_cast<value_type>(0xff00)); }
+	void setCa(ColorAttribute ca) {value = (value & static_cast<value_type>(0x00ff)) | (static_cast<value_type>(ca.value) << 8); }
 };
 
 #endif //XRPG_CHARACTER_H

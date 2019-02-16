@@ -79,7 +79,6 @@ namespace Run {
 		border();
 
 		const auto tl = center(InputSize);
-		const auto ctr = tl + Coords{PromptSize, 0};
 
 		const auto &player = GlobalContext::player();
 		const auto &name = player.name;
@@ -90,11 +89,9 @@ namespace Run {
 				Color::White,
 				s_activeIndex == Name ? Color::LWhite : Color::White,
 				Prompts[Name],
-				PromptSize, name
-		);
-		write(
-				ctr + Coords{static_cast<Coords::value_type>(name.size()), 0},
-				Character(' ', ColorAttribute::Background(s_activeIndex == Name ? Color::LWhite : Color::Black))
+				PromptSize,
+				name,
+				s_activeIndex == Name
 		);
 
 		Input::slider(

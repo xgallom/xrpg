@@ -14,13 +14,13 @@
 namespace Input
 {
 	void text(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
-			  size_t promptSize, const std::string &value);
+			  size_t promptSize, const std::string &value, bool isActive);
 
 	void slider(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
 			    size_t promptSize, size_t strSize, int value, int min, int max);
 
 	void integer(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
-				 size_t promptSize, int value);
+				 size_t promptSize, int value, bool drawCursor);
 
 	void button(Coords pos, ColorAttribute color, const char text[], size_t textSize);
 }

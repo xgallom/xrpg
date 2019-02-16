@@ -53,7 +53,9 @@ struct ColorAttribute
 	{}
 
 	static constexpr ColorAttribute Background(Color bg) { return ColorAttribute(bg, bg); }
+	constexpr ColorAttribute toBg() const { return wholeFg() | (wholeFg() << 4); }
 
+	constexpr value_type wholeFg() const { return value & static_cast<value_type>(0x0f); }
 	constexpr value_type fg() const { return value & static_cast<value_type>(0x07); }
 	constexpr value_type bg() const { return (value >> 4) & static_cast<value_type>(0x07); }
 

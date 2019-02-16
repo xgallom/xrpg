@@ -5,6 +5,7 @@
 #include "Editor.h"
 
 #include "Context/GlobalContext.h"
+#include "EditorBody.h"
 #include "EditorMenu.h"
 #include "NewMap.h"
 #include "SaveMap.h"
@@ -16,13 +17,18 @@
 
 namespace Run
 {
-	static void handle(int c);
-
 	void Editor::render()
 	{
 		border();
 
-		EditorMenu::render();
+		if(GlobalContext::state() == GlobalState::Editor) {
+			EditorMenu::render();
+			EditorBody::render();
+		}
+		else {
+			EditorBody::render();
+			EditorMenu::render();
+		}
 
 		switch(GlobalContext::state()) {
 			case GlobalState::Editor:
@@ -53,7 +59,7 @@ namespace Run
 
 		switch(GlobalContext::state()) {
 			case GlobalState::Editor:
-				handle(c);
+				EditorBody::update(c);
 				break;
 
 			case GlobalState::Menu:
@@ -80,20 +86,5 @@ namespace Run
 	void Editor::transit()
 	{
 		GlobalContext::state() = GlobalState::Editor;
-	}
-
-	static void handle(int c)
-	{
-		switch(c) {
-			case '`':
-			case '~':
-				EditorMenu::transit();
-				break;
-
-			case 'q':
-			case 'Q':
-				quit();
-				break;
-		}
 	}
 }

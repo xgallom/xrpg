@@ -5,6 +5,7 @@
 #ifndef XRPG_GLOBALCONTEXT_H
 #define XRPG_GLOBALCONTEXT_H
 
+#include <Graphics/Coords.h>
 #include <Util/Flag.h>
 
 #include <string>
@@ -22,13 +23,13 @@ namespace GlobalState
 	};
 }
 
-class Player;
 class Map;
 
 namespace GlobalContext
 {
 	GlobalState::Enum &state();
 	Map &map();
+	Coords &pos();
 	std::string &fileName();
 }
 

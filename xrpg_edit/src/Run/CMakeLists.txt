@@ -2,6 +2,7 @@ set(src ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(Run
         ${src}/Editor.cpp
+        ${src}/EditorBody.cpp
         ${src}/EditorMenu.cpp
         ${src}/FileNamePrompt.cpp
         ${src}/NewMap.cpp
