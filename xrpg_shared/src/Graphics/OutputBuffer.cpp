@@ -39,6 +39,14 @@ namespace OutputBuffer
 			buf = Character{};
 	}
 
+	void clear(Region region)
+	{
+		for(auto y = region.tl.y; y < region.br.y; ++y) {
+			for(auto x = region.tl.x; x < region.br.x; ++x)
+				at({x, y}) = Character{};
+		}
+	}
+
 	void update()
 	{
 		resize();

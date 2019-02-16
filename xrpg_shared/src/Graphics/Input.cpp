@@ -7,6 +7,7 @@
 #include "Graphics/OutputBuffer.h"
 
 #include <cmath>
+#include <sstream>
 
 namespace Input
 {
@@ -33,6 +34,18 @@ namespace Input
 
 		write(pos, promptColor, prompt, promptSize);
 		write(pos + Coords{static_cast<Coords::value_type>(promptSize), 0}, valueColor, str.c_str(), strSize);
+	}
+
+	void integer(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
+				 size_t promptSize, int value)
+	{
+		std::stringstream ss;
+		ss << value;
+
+		auto str = ss.str();
+
+		write(pos, promptColor, prompt, promptSize);
+		write(pos + Coords{static_cast<Coords::value_type>(promptSize), 0}, valueColor, str.c_str(), str.size());
 	}
 
 	void button(Coords pos, ColorAttribute color, const char text[], size_t textSize)

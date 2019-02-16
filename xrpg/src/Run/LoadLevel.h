@@ -10,6 +10,7 @@ namespace Run
 	struct LoadLevel {
 		static void render();
 		static void update();
+		static void transit();
 	};
 }
 

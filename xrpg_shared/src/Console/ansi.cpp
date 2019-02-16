@@ -128,11 +128,6 @@ namespace Console
 		return c;
 		*/
 
-		int c = getchar();
-
-		if(c == '`')
-			cls();
-
-		return c;
+		return getchar();
 	}
 }

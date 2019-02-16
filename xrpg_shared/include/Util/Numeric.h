@@ -19,6 +19,23 @@ namespace Numeric
 			--remaining;
 		}
 	}
+
+	template<typename T, T Min, T Max>
+	inline void update(T &v, int input)
+	{
+		if(input == '\b' || input == '\x7f') {
+			const auto newValue = v / 10;
+
+			if(newValue >= Min)
+				v = newValue;
+		}
+		else if(input >= '0' && input <= '9') {
+			const auto newValue = v * 10 + (input - '0');
+
+			if(newValue <= Max)
+				v = newValue;
+		}
+	}
 }
 
 #endif //XRPG_NUMERIC_H

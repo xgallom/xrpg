@@ -12,6 +12,7 @@
 #include "Context/GlobalContext.h"
 
 #include <Graphics/OutputBuffer.h>
+#include <Run/Dispatch.h>
 
 namespace Run
 {
@@ -20,31 +21,14 @@ namespace Run
 		return OutputBuffer::init({80, 25});
 	}
 
-	template<typename T>
-	static bool run()
-	{
-		OutputBuffer::clear();
-		T::render();
-		OutputBuffer::update();
-
-		T::update();
-
-		return true;
-	}
-
-	static bool quit()
-	{
-		return false;
-	}
-
 	bool run()
 	{
 		static constexpr bool (* const runTable[GlobalState::Size]) (void) = {
-				&run<MainMenu >,
-				&run<NewGame  >,
-				&run<LoadGame >,
-				&run<LoadLevel>,
-				&quit
+				&dispatch<MainMenu >,
+				&dispatch<NewGame  >,
+				&dispatch<LoadGame >,
+				&dispatch<LoadLevel>,
+				&dispatchQuit
 		};
 
 		return (*runTable[GlobalContext::state()])();

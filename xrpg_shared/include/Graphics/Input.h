@@ -19,6 +19,9 @@ namespace Input
 	void slider(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
 			    size_t promptSize, size_t strSize, int value, int min, int max);
 
+	void integer(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
+				 size_t promptSize, int value);
+
 	void button(Coords pos, ColorAttribute color, const char text[], size_t textSize);
 }
 

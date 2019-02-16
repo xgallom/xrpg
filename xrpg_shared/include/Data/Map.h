@@ -14,6 +14,9 @@ struct Map {
 	Coords size = {};
 
 	std::vector<Character> data = std::vector<Character>{};
+
+	Map() = default;
+	explicit Map(Coords a_size) : size(a_size) { data.resize(a_size.area()); }
 };
 
 #endif //XRPG_MAP_H

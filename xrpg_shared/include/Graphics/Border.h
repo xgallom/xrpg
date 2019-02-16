@@ -9,6 +9,6 @@
 #include "Coords.h"
 
 void border(ColorAttribute colorAttribute = ColorAttribute::Background(Color::White));
-void border(Region region, ColorAttribute colorAttribute);
+void border(Region region, ColorAttribute colorAttribute = ColorAttribute::Background(Color::White));
 
 #endif //XRPG_BORDER_H

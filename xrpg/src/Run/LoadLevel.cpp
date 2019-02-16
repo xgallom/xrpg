@@ -4,43 +4,83 @@
 
 #include "LoadLevel.h"
 
+#include "Context/GlobalContext.h"
+#include "Quit.h"
+
 #include <Console/ConsoleInput.h>
 #include <Graphics/Border.h>
+#include <Graphics/Message.h>
 #include <Graphics/OutputBuffer.h>
 #include <Storage/Storage.h>
 
-#include <sstream>
 #include <cstring>
+#include <sstream>
 
 namespace Run
 {
-	enum Index {
-		Initializing = 0,
-		Loading,
+	enum State {
+		Loading = 0,
 		Finished,
+		Failed,
 
 		Size
 	};
+
+	static constexpr char Text[Size][14] = {
+			"Loading",
+			"Load finished",
+			"Load failed"
+	};
+
+	static int s_state = Loading;
+
+	static void load();
 
 	void LoadLevel::render()
 	{
 		border();
 
-		return;
-		const auto level = Storage::Level::restore();
-
-		if(level) {
-			std::stringstream ss;
-			ss << level().map.size.x << " " << level().map.size.y;
-
-			write({0, 0}, Color::LWhite, ss.str().c_str(), ss.str().size());
+		switch(s_state) {
+			case Loading : message(Text[Loading ], Color::LWhite); break;
+			case Finished: message(Text[Finished], Color::LGreen); break;
+			case Failed  : message(Text[Failed  ], Color::LRed  ); break;
 		}
-		else
-			write({0, 0}, Color::LWhite, "Load failed.", strlen("Load failed."));
 	}
 
 	void LoadLevel::update()
 	{
-		//Console::get();
+		switch(s_state) {
+			case Loading:
+				load();
+				break;
+
+			case Finished:
+				Console::get();
+				break;
+
+			case Failed:
+				Console::get();
+				quit();
+				break;
+		}
+	}
+
+	void LoadLevel::transit()
+	{
+		GlobalContext::state() = GlobalState::LoadLevel;
+		s_state = Loading;
+	}
+
+
+	static void load()
+	{
+		auto level = Storage::Level::restore("");
+
+		if(level) {
+			GlobalContext::map() = std::move(level().map);
+			s_state = Finished;
+		}
+		else
+			s_state = Failed;
 	}
 }

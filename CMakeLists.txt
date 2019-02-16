@@ -28,4 +28,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 
 add_subdirectory(external)
 add_subdirectory(xrpg_shared)
+add_subdirectory(xrpg_edit)
 add_subdirectory(xrpg)

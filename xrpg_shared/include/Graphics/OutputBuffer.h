@@ -17,6 +17,7 @@ namespace OutputBuffer
 	void deinit();
 
 	void clear();
+	void clear(Region region);
 	void update();
 
 	Coords size();

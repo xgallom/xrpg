@@ -6,6 +6,7 @@ set(Run
         ${src}/MainMenu.cpp
         ${src}/NewGame.cpp
         ${src}/Run.cpp
+        ${src}/Quit.cpp
 
         PARENT_SCOPE
         )

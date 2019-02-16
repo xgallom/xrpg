@@ -1,4 +1,4 @@
-//
+ //
 // Created by xgallom on 11. 2. 2019.
 //
 
@@ -24,14 +24,17 @@ namespace Storage
 		constexpr operator bool() const { return ok; }
 	};
 
+	using List = std::vector<std::string>;
+
 	namespace Save {
+		Result<List> list();
 		bool store(const ::Save &save);
-		Result<::Save> restore();
+		Result<::Save> restore(const std::string &save);
 	}
 
 	namespace Level {
-		bool store(const ::Level &level);
-		Result<::Level> restore();
+		bool store(const std::string &fileName, const ::Level &level);
+		Result<::Level> restore(const std::string &fileName);
 	}
 }
 

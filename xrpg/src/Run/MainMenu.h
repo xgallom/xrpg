@@ -10,6 +10,7 @@ namespace Run
 	struct MainMenu {
 		static void render();
 		static void update();
+		static void transit();
 	};
 }
 

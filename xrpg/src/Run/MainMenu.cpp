@@ -5,6 +5,9 @@
 #include "MainMenu.h"
 
 #include "Context/GlobalContext.h"
+#include "LoadGame.h"
+#include "NewGame.h"
+#include "Quit.h"
 
 #include <Console/ConsoleInput.h>
 #include <Graphics/Menu.h>
@@ -27,14 +30,14 @@ namespace Run
 			"Quit     "
 	};
 
-	static int s_activeIndex = NewGame;
+	static int s_activeIndex = First;
 
 	static void handle();
 
 	void MainMenu::render()
 	{
 		border();
-		MainMenuMenu.render(s_activeIndex);
+		MainMenuMenu.renderCenter(s_activeIndex);
 	}
 
 	void MainMenu::update()
@@ -63,18 +66,19 @@ namespace Run
 		}
 	}
 
+	void MainMenu::transit()
+	{
+		GlobalContext::state() = GlobalState::MainMenu;
+	}
+
 	static void handle()
 	{
-		GlobalState::Enum newState;
-
 		switch(s_activeIndex) {
-			case NewGame:  newState = GlobalState::NewGame;  break;
-			case LoadGame: newState = GlobalState::LoadGame; break;
-			case Quit:     newState = GlobalState::Quit;     break;
+			case NewGame:  NewGame::transit();  break;
+			case LoadGame: LoadGame::transit(); break;
+			case Quit:     quit();     break;
 
 			default:       return;
 		}
-
-		GlobalContext::state() = newState;
 	}
 }

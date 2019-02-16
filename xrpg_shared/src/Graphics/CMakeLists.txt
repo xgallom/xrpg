@@ -7,6 +7,7 @@ set(Graphics
         ${src}/Coords.cpp
         ${src}/Input.cpp
         ${src}/Menu.cpp
+        ${src}/Message.cpp
         ${src}/OutputBuffer.cpp
 
         PARENT_SCOPE

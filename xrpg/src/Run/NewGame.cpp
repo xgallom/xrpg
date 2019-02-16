@@ -5,6 +5,8 @@
 #include "NewGame.h"
 
 #include "Context/GlobalContext.h"
+#include "LoadLevel.h"
+#include "MainMenu.h"
 
 #include <Console/ConsoleInput.h>
 #include <Data/Player.h>
@@ -45,7 +47,7 @@ namespace Run {
 
 	static constexpr auto Total = 40, Initial = Total - 3 * AttribDefault, Max = Total - 3 * AttribMin;
 
-	static int s_activeIndex = Name;
+	static int s_activeIndex = First;
 	static int s_remaining = Initial;
 
 	static void handle(int input);
@@ -146,6 +148,14 @@ namespace Run {
 		}
 	}
 
+	void NewGame::transit()
+	{
+		GlobalContext::state() = GlobalState::NewGame;
+		GlobalContext::player() = Player{};
+		s_activeIndex = First;
+		s_remaining = Initial;
+	}
+
 	static void handle(int input)
 	{
 		auto &player = GlobalContext::player();
@@ -170,13 +180,12 @@ namespace Run {
 				break;
 
 			case Accept:
-				if(!name.empty()) {
-					GlobalContext::state() = GlobalState::LoadLevel;
-				}
+				if(!name.empty())
+					LoadLevel::transit();
 				break;
 
 			case Cancel:
-				GlobalContext::state() = GlobalState::MainMenu;
+				MainMenu::transit();
 				break;
 		}
 	}

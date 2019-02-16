@@ -31,7 +31,8 @@ constexpr Coords operator-(Coords l, const Coords &r) { return l -= r; }
 constexpr Coords operator*(Coords l, Coords::value_type r) { return l *= r; }
 constexpr Coords operator/(Coords l, Coords::value_type r) { return l /= r; }
 
-constexpr Coords center(Coords c1, Coords c2) { return (c1 - c2) / 2; }
+constexpr Coords::value_type center(Coords::value_type in, Coords::value_type v) { return (in - v) / 2; }
+constexpr Coords center(Coords in, Coords c) { return (in - c) / 2; }
 
 struct Region {
 	Coords tl, br;

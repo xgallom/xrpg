@@ -11,6 +11,7 @@ namespace Run
 	{
 		static void render();
 		static void update();
+		static void transit();
 	};
 }
 

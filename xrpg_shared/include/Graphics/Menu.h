@@ -24,7 +24,8 @@ struct Menu {
 
 	constexpr size_t index(const_iterator i) const { return i - begin(); }
 
-	void render(int activeIndex) const;
+	void renderCenter(int activeIndex) const;
+	void renderHorizontal(Coords pos, int activeIndex) const;
 };
 
 #include "Menu.tcc"
