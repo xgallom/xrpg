@@ -12,7 +12,7 @@
 
 namespace Console
 {
-	bool init();
+	bool init(bool enableDebug);
 	void deinit();
 
 	Coords size();

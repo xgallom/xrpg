@@ -27,6 +27,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 
 
 add_subdirectory(external)
+
 add_subdirectory(xrpg_shared)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+add_subdirectory(data)
+
 add_subdirectory(xrpg_edit)
 add_subdirectory(xrpg)

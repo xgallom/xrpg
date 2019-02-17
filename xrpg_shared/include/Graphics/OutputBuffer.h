@@ -13,7 +13,7 @@
 
 namespace OutputBuffer
 {
-	bool init(Coords size = {});
+	bool init(Coords size = {}, bool enableDebug = false);
 	void deinit();
 
 	void clear();

@@ -5,9 +5,14 @@
 #ifndef XRPG_RUN_H
 #define XRPG_RUN_H
 
+#include <vector>
+#include <string>
+
+using Arguments = std::vector<std::string>;
+
 namespace Run
 {
-	bool init();
+	bool init(const Arguments &arguments);
 	bool run();
 	void deinit();
 }

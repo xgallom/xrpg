@@ -16,9 +16,9 @@ namespace OutputBuffer
 
 	static void resize();
 
-	bool init(Coords size)
+	bool init(Coords size, bool enableDebug)
 	{
-		if(!Console::init())
+		if(!Console::init(enableDebug))
 			return false;
 
 		s_targetSize = size;

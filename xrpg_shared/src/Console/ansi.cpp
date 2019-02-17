@@ -26,7 +26,7 @@ namespace Console
 	static Coords s_pos = {};
 	static termios s_default;
 
-	bool init()
+	bool init(bool enableDebug)
 	{
 		static bool isInit = false;
 
@@ -45,6 +45,9 @@ namespace Console
 		std::cout << AnsiPrefix << AnsiCursorHide;
 
 		cls();
+
+		if(!enableDebug)
+			fclose(stderr);
 
 		isInit = true;
 

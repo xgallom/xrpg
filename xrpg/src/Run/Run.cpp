@@ -11,14 +11,31 @@
 
 #include "Context/GlobalContext.h"
 
+#include <Audio/Audio.h>
+#include <Audio/AudioStream.h>
 #include <Graphics/OutputBuffer.h>
 #include <Run/Dispatch.h>
+#include <iostream>
 
 namespace Run
 {
-	bool init()
+	bool init(const Arguments &arguments)
 	{
-		return OutputBuffer::init({80, 25});
+		bool enableDebug = false;
+		for(const auto &argument : arguments) {
+			if(argument == "ENABLE_DEBUG")
+				enableDebug = true;
+			else {
+				std::cerr << "Invalid argument " << argument << "\n";
+				return false;
+			}
+		}
+
+		return
+			OutputBuffer::init({80, 25}, enableDebug) &&
+			Audio::init() &&
+			Audio::openDefaultStream() &&
+			Audio::startStream();
 	}
 
 	bool run()
@@ -37,5 +54,6 @@ namespace Run
 	void deinit()
 	{
 		OutputBuffer::deinit();
+		Audio::deinit();
 	}
 }
