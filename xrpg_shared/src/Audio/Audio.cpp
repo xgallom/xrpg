@@ -28,7 +28,6 @@ namespace Audio
 			return false;
 		}
 
-		std::cin.get();
 		const auto result = wavFile.parseHeader();
 
 		if(!result) {
