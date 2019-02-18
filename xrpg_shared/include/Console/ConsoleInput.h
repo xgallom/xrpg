@@ -10,6 +10,7 @@
 namespace Console
 {
 	int get();
+	int getAsync();
 	std::string read(size_t max);
 }
 

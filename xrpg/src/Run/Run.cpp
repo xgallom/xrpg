@@ -16,9 +16,13 @@
 #include <Graphics/OutputBuffer.h>
 #include <Run/Dispatch.h>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 namespace Run
 {
+	static void synchronize();
+
 	bool init(const Arguments &arguments)
 	{
 		bool enableDebug = false;
@@ -48,6 +52,8 @@ namespace Run
 				&dispatchQuit
 		};
 
+		synchronize();
+
 		return (*runTable[GlobalContext::state()])();
 	}
 
@@ -55,5 +61,16 @@ namespace Run
 	{
 		OutputBuffer::deinit();
 		Audio::deinit();
+	}
+
+	static void synchronize()
+	{
+		static auto lastUpdate = std::chrono::high_resolution_clock::now();
+
+		auto now = std::chrono::high_resolution_clock::now();
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 30) - (now - lastUpdate));
+
+		lastUpdate = now;
 	}
 }

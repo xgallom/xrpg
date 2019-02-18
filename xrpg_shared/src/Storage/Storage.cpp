@@ -34,7 +34,7 @@ namespace Storage
 
 		OArchive archive(fstream);
 
-		try { archive(d); } catch(cereal::Exception &) { return false; }
+		try { archive(d); } catch(...) { return false; }
 
 		return true;
 	}
@@ -48,7 +48,7 @@ namespace Storage
 
 		T d;
 
-		try { archive(d); } catch(cereal::Exception &) { return Result<T>{}; }
+		try { archive(d); } catch(...) { return {}; }
 
 		return d;
 	}

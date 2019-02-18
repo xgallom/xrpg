@@ -133,4 +133,15 @@ namespace Console
 
 		return getchar();
 	}
+
+	int getAsync()
+	{
+		auto count = 0;
+		ioctl(STDIN_FILENO, FIONREAD, &count);
+
+		if(count)
+			return get();
+
+		return 0;
+	}
 }

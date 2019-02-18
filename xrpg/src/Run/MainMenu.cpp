@@ -42,7 +42,7 @@ namespace Run
 
 	void MainMenu::update()
 	{
-		switch(Console::get()) {
+		switch(Console::getAsync()) {
 			case '8':
 			case 'w':
 				if(s_activeIndex > First)

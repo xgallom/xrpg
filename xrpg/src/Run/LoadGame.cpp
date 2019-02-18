@@ -146,9 +146,7 @@ namespace Run
 
 	static void updateUi()
 	{
-		const auto c = Console::get();
-
-		switch(c) {
+		switch(Console::getAsync()) {
 			case '2':
 			case 's':
 				if(s_selection < s_saves.size() - 1)

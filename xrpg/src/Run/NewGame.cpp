@@ -126,9 +126,11 @@ namespace Run {
 
 	void NewGame::update()
 	{
-		const auto input = Console::get();
+		const auto input = Console::getAsync();
 
 		switch(input) {
+			case 0: break;
+
 			case '8':
 				if(s_activeIndex > First)
 					--s_activeIndex;
