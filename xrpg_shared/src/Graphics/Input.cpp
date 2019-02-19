@@ -27,6 +27,11 @@ namespace Input
 	void slider(Coords pos, ColorAttribute promptColor, ColorAttribute valueColor, const char prompt[],
 				size_t promptSize, size_t strSize, int value, int min, int max)
 	{
+		if(value > 99)
+			value = 99;
+		else if(value < 0)
+			value = 0;
+
 		const auto offset = 1 +
 				static_cast<size_t>(std::round(static_cast<double>(strSize - 6) * (value - min) / (max - min)));
 

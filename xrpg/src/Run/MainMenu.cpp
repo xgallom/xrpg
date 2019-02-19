@@ -5,8 +5,9 @@
 #include "MainMenu.h"
 
 #include "Context/GlobalContext.h"
-#include "LoadGame.h"
 #include "NewGame.h"
+#include "LoadGame.h"
+#include "Settings.h"
 #include "Quit.h"
 
 #include <Console/ConsoleInput.h>
@@ -17,6 +18,7 @@ namespace Run
 	enum Index {
 		NewGame = 0,
 		LoadGame,
+		Settings,
 		Quit,
 
 		Size
@@ -27,6 +29,7 @@ namespace Run
 	static constexpr Menu<Size, 9> MainMenuMenu = {
 			"New Game ",
 			"Load Game",
+			"Settings ",
 			"Quit     "
 	};
 
@@ -45,12 +48,14 @@ namespace Run
 		switch(Console::getAsync()) {
 			case '8':
 			case 'w':
+			case '<':
 				if(s_activeIndex > First)
 					--s_activeIndex;
 				break;
 
 			case '2':
 			case 's':
+			case '>':
 				if(s_activeIndex < Last)
 					++s_activeIndex;
 				break;
@@ -76,6 +81,7 @@ namespace Run
 		switch(s_activeIndex) {
 			case NewGame:  NewGame::transit();  break;
 			case LoadGame: LoadGame::transit(); break;
+			case Settings: Settings::transit(); break;
 			case Quit:     quit();     break;
 
 			default:       return;

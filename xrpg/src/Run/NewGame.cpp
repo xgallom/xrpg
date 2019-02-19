@@ -132,11 +132,13 @@ namespace Run {
 			case 0: break;
 
 			case '8':
+			case '<':
 				if(s_activeIndex > First)
 					--s_activeIndex;
 				break;
 
 			case '2':
+			case '>':
 				if(s_activeIndex < Last)
 					++s_activeIndex;
 				break;

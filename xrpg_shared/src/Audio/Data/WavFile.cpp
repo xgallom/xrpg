@@ -2,18 +2,15 @@
 // Created by xgallom on 2/17/19.
 //
 
-#include "File.h"
+#include "WavFile.h"
+
+#include "DataInfo.h"
 
 namespace Audio::Data
 {
-	static constexpr uint16_t
-		AudioFormatPcm = 1,
-		ChannelCountMono = 1,
-		ChannelCountStereo = 2;
-
+	static constexpr uint16_t AudioFormatPcm = 1;
 	static constexpr uint32_t
-		WavFormatSize = 16,
-		WavHeaderSize = WavFormatSize + 20;
+		WavFormatSize = 16;
 
 	File::File(const std::string &fileName) : fileStream(fileName, std::ios::binary | std::ios::in) {}
 
@@ -24,6 +21,9 @@ namespace Audio::Data
 
 	int File::get()
 	{
+		if(fileStream.eof())
+			return EOF;
+
 		return fileStream.get();
 	}
 
@@ -52,9 +52,15 @@ namespace Audio::Data
 		return fileInfo;
 	}
 
-	int16_t WavFile::parseShort()
+	Result<int16_t> WavFile::parseShort()
 	{
-		return static_cast<int16_t>(get() | (get() << 8));
+		int low  = get();
+		int high = get();
+
+		if(high == EOF || low == EOF)
+			return {};
+
+		return static_cast<int16_t>(low | (high << 8));
 	}
 
 	uint16_t WavFile::parseUShort()

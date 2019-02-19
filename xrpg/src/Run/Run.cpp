@@ -7,6 +7,7 @@
 #include "MainMenu.h"
 #include "NewGame.h"
 #include "LoadGame.h"
+#include "Settings.h"
 #include "LoadLevel.h"
 
 #include "Context/GlobalContext.h"
@@ -48,6 +49,7 @@ namespace Run
 				&dispatch<MainMenu >,
 				&dispatch<NewGame  >,
 				&dispatch<LoadGame >,
+				&dispatch<Settings >,
 				&dispatch<LoadLevel>,
 				&dispatchQuit
 		};

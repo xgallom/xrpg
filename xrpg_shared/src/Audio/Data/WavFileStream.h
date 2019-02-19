@@ -2,27 +2,22 @@
 // Created by xgallom on 2/17/19.
 //
 
-#ifndef XRPG_AUDIODATASTREAM_H
-#define XRPG_AUDIODATASTREAM_H
+#ifndef XRPG_WAVFILESTREAM_H
+#define XRPG_WAVFILESTREAM_H
 
-#include "File.h"
+#include "WavFile.h"
 
 #include "DataInfo.h"
 
-#include <vector>
+#include <memory>
 
 namespace Audio::Data
 {
-	struct StreamChunk {
-		DataInfo dataInfo = {};
-		std::vector<int16_t> data = {};
-	};
-
 	struct WavFileStream {
 		explicit WavFileStream(const std::string &fileName);
 
 		bool prepare();
-		StreamChunk getChunk();
+		std::unique_ptr<StreamChunk> getChunk();
 
 
 	private:
@@ -34,4 +29,4 @@ namespace Audio::Data
 	};
 }
 
-#endif //XRPG_STREAM_H
+#endif //XRPG_WAVFILESTREAM_H

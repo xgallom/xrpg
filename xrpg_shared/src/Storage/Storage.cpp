@@ -54,18 +54,24 @@ namespace Storage
 	}
 
 	namespace Save {
-		static constexpr char path[] = "save/";
+		static constexpr char path[] = "data/save/";
 		Result<List> list() { return ::Storage::list<path>(); }
 		bool store(const ::Save &save) { return ::Storage::store("save.bin", save); }
 		Result<::Save> restore(const std::string &save) { return ::Storage::restore<::Save>(path + save); }
 	}
 
 	namespace Level {
-		static constexpr char path[] = "level/";
+		static constexpr char path[] = "data/level/";
 		Result<List> list() { return ::Storage::list<path>(); }
 		bool store(const std::string &fileName, const ::Level &level)
 		{ return ::Storage::store(path + fileName, level); }
 		Result<::Level> restore(const std::string &fileName)
 		{ return ::Storage::restore<::Level>(path + fileName); }
+	}
+
+	namespace Settings {
+		static constexpr char fileName[] = "data/config.bin";
+		bool store(const ::Settings &settings) { return ::Storage::store(fileName, settings); }
+		Result<::Settings> restore() { return Storage::restore<::Settings>(fileName); }
 	}
 }

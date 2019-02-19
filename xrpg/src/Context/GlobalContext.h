@@ -11,6 +11,7 @@ namespace GlobalState
 		MainMenu = 0,
 		NewGame,
 		LoadGame,
+		Settings,
 		LoadLevel,
 		Quit,
 

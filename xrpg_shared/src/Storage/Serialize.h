@@ -11,6 +11,7 @@
 
 #include "Storage/Level.h"
 #include "Storage/Save.h"
+#include "Storage/Settings.h"
 
 using IArchive = cereal::BinaryInputArchive;
 using OArchive = cereal::BinaryOutputArchive;
@@ -35,5 +36,8 @@ void load(IArchive &ar, Map &d);
 
 void save(OArchive &ar, const Level &d);
 void load(IArchive &ar, Level &d);
+
+void save(OArchive &ar, const Settings &d);
+void load(IArchive &ar, Settings &d);
 
 #endif //XRPG_SERIALIZE_H

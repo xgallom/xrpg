@@ -20,6 +20,27 @@ namespace Numeric
 		}
 	}
 
+	template<typename T, T Min, T Max, T Step>
+	inline void updateWithStep(T &v, int input)
+	{
+		if(input == '4') {
+			const auto newValue = v - Step;
+
+			if(newValue < Min)
+				v = Min;
+			else
+				v = newValue;
+		}
+		else if(input == '6') {
+			const auto newValue = v + Step;
+
+			if(newValue > Max)
+				v = Max;
+			else
+				v = newValue;
+		}
+	}
+
 	template<typename T, T Min, T Max>
 	inline void update(T &v, int input)
 	{

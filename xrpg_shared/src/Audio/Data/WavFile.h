@@ -2,8 +2,8 @@
 // Created by xgallom on 2/17/19.
 //
 
-#ifndef XRPG_AUDIOFILE_H
-#define XRPG_AUDIOFILE_H
+#ifndef XRPG_WAVFILE_H
+#define XRPG_WAVFILE_H
 
 #include "Util/Result.h"
 
@@ -41,7 +41,7 @@ namespace Audio::Data
 		uint32_t remaining() const { return m_remaining / sizeof(type); }
 
 		Result<WavFileInfo> parseHeader();
-		int16_t parseShort();
+		Result<int16_t> parseShort();
 
 	private:
 		uint16_t parseUShort();
@@ -57,4 +57,4 @@ namespace Audio::Data
 	};
 }
 
-#endif //XRPG_AUDIOFILE_H
+#endif //XRPG_WAVFILE_H

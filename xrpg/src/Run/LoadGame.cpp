@@ -31,7 +31,7 @@ namespace Run
 
 		Size
 	};
-	static constexpr auto First = Accept, Last = Cancel;
+	static constexpr auto First = Listing, Last = Cancel;
 
 	static constexpr size_t TextSize = 24;
 
@@ -161,12 +161,14 @@ namespace Run
 
 			case '4':
 			case 'a':
+			case '<':
 				if(s_state == Cancel)
 					s_state = Accept;
 				break;
 
 			case '6':
 			case 'd':
+			case '>':
 				if(s_state == Accept)
 					s_state = Cancel;
 				break;

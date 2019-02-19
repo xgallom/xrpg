@@ -4,10 +4,10 @@
 
 #include "Audio/Audio.h"
 #include "Audio/AudioStream.h"
-#include "AudioContext.h"
+#include "Audio/Data/WavFile.h"
 
 #include <iostream>
-#include <Audio/Data/File.h>
+#include <portaudio.h>
 
 namespace Audio
 {
@@ -21,7 +21,7 @@ namespace Audio
 			return false;
 		}
 
-		auto wavFile = Data::WavFile("data/music/tristram.wav");
+		auto wavFile = Data::WavFile("data/music/title.wav");
 
 		if(!wavFile.isOpen()) {
 			std::cerr << "Error opening audio file\n";

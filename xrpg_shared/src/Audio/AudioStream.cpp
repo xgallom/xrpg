@@ -4,69 +4,38 @@
 
 #include "Audio/AudioStream.h"
 
-#include "AudioContext.h"
-#include "SampleFormat.h"
+#include "AudioCallback.h"
+#include "AudioThread.h"
+#include "AudioPlayer.h"
+#include "Storage/Storage.h"
 
 #include <iostream>
-#include <Audio/Data/Stream.h>
+#include <thread>
 
 namespace Audio
 {
-	struct AudioData {
-		Data::WavFileStream *stream = nullptr;
-	};
-
-	static constexpr int
-		InputChannelCount = 0,
-		OutputChannelCount = 2;
-
-	static AudioData s_audioData = {};
 	static unsigned long s_framesPerBuffer = 0;
-
-	static int audioCallback(
-			const void *,
-			void *outputPtr,
-			unsigned long,
-			const PaStreamCallbackTimeInfo *,
-			PaStreamCallbackFlags,
-			void *audioDataPtr
-	) noexcept
-	{
-		//clock_t begin = clock();
-
-		auto &audioData = *reinterpret_cast<AudioData *>(audioDataPtr);
-		auto *output = reinterpret_cast<float *>(outputPtr);
-
-		const auto chunk = audioData.stream->getChunk();
-
-		for(const auto sample : chunk.data)
-			*output++ = static_cast<float>(sample) / std::numeric_limits<int16_t>::max();
-
-		//clock_t end = clock();
-
-		//std::cerr << double(end - begin) / CLOCKS_PER_SEC << "\n";
-
-		return 0;
-	}
 
 	bool openDefaultStream()
 	{
-		auto *&s_stream = stream();
+		auto *&s_stream = AudioContext::stream();
 
 		if(s_stream)
 			return false;
 
 		s_framesPerBuffer = 256;
 
+		AudioContext::callbackData()->level.apply(Storage::Settings::restore()());
+
 		const auto err = Pa_OpenDefaultStream(
 				&s_stream,
-				InputChannelCount,
-				OutputChannelCount,
-				SampleFormat::Float32,
-				SampleRate,
+				AudioContext::InputChannelCount,
+				AudioContext::OutputChannelCount,
+				AudioContext::SampleFormat,
+				AudioContext::SampleRate,
 				s_framesPerBuffer,
-				audioCallback,
-				&s_audioData
+				AudioCallback::callback,
+				AudioContext::callbackData()
 		);
 
 		if(err != paNoError) {
@@ -89,14 +58,23 @@ namespace Audio
 
 	bool startStream()
 	{
-		s_audioData.stream = new Data::WavFileStream("data/music/tristram.wav");
+		AudioThread::start();
 
-		if(!s_audioData.stream->prepare()) {
-			std::cerr << "Failed to prepare audio stream\n";
-			return false;
+		AudioContext::callbackData()->reset();
+
+		auto music = std::make_unique<Data::WavFileStream>("data/music/title.wav");
+
+		if(music->prepare()) {
+			AudioPlayer::addMusic(std::move(music));
 		}
 
-		if(const auto err = Pa_StartStream(stream()); err != paNoError) {
+		music = std::make_unique<Data::WavFileStream>("data/music/docks.wav");
+
+		if(music->prepare()) {
+			AudioPlayer::addMusic(std::move(music));
+		}
+
+		if(const auto err = Pa_StartStream(AudioContext::stream()); err != paNoError) {
 			std::cerr
 				<< "Failed to start audio stream\n"
 				<< Pa_GetErrorText(err);
@@ -104,12 +82,24 @@ namespace Audio
 			return false;
 		}
 
+		std::vector<std::unique_ptr<Data::WavFileBuffer>> sounds;
+		sounds.emplace_back(std::make_unique<Data::WavFileBuffer>("data/sound/cursor/select.wav"));
+
+		if(!sounds[0]->prepare()) {
+			return false;
+		}
+
+		AudioPlayer::replaceSounds(std::move(sounds));
+		AudioPlayer::playSound(0);
+
 		return true;
 	}
 
 	bool stopStream()
 	{
-		if(const auto err = Pa_StopStream(stream()); err != paNoError) {
+		AudioThread::stop();
+
+		if(const auto err = Pa_StopStream(AudioContext::stream()); err != paNoError) {
 			std::cerr
 				<< "Failed to stop audio stream\n"
 				<< Pa_GetErrorText(err);
@@ -122,16 +112,14 @@ namespace Audio
 
 	bool abortStream()
 	{
-		auto *s_stream = stream();
+		AudioThread::stop();
 
-		if(Pa_IsStreamActive(s_stream)) {
-			if(const auto err = Pa_AbortStream(stream()); err != paNoError) {
-				std::cerr
-					<< "Failed to abort audio stream\n"
-					<< Pa_GetErrorText(err);
+		if(const auto err = Pa_AbortStream(AudioContext::stream()); err != paNoError) {
+			std::cerr
+				<< "Failed to abort audio stream\n"
+				<< Pa_GetErrorText(err);
 
-				return false;
-			}
+			return false;
 		}
 
 		return true;
@@ -139,9 +127,11 @@ namespace Audio
 
 	bool closeStream()
 	{
-		auto *&s_stream = stream();
+		auto *&s_stream = AudioContext::stream();
 
-		if(s_stream && abortStream()) {
+		if(s_stream) {
+			stopStream();
+
 			if(const auto err = Pa_CloseStream(s_stream); err != paNoError) {
 				std::cerr
 					<< "Failed to close audio stream\n"

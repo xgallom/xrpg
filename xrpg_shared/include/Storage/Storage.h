@@ -7,6 +7,7 @@
 
 #include "Save.h"
 #include "Level.h"
+#include "Settings.h"
 #include "Util/Result.h"
 
 namespace Storage
@@ -22,6 +23,11 @@ namespace Storage
 	namespace Level {
 		bool store(const std::string &fileName, const ::Level &level);
 		Result<::Level> restore(const std::string &fileName);
+	}
+
+	namespace Settings {
+		bool store(const ::Settings &settings);
+		Result<::Settings> restore();
 	}
 }
 

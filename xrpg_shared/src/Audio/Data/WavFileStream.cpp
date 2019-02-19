@@ -2,7 +2,7 @@
 // Created by xgallom on 2/17/19.
 //
 
-#include "Stream.h"
+#include "WavFileStream.h"
 
 #include "Audio/AudioStream.h"
 
@@ -23,20 +23,24 @@ namespace Audio::Data
 		return true;
 	}
 
-	StreamChunk WavFileStream::getChunk()
+	std::unique_ptr<StreamChunk> WavFileStream::getChunk()
 	{
-		StreamChunk chunk{};
-
 		const auto size = chunkSize();
 
-		chunk.dataInfo = {m_fileInfo.format.sampleRate, m_fileInfo.format.channelCount};
-		chunk.data.reserve(size);
+		std::unique_ptr<StreamChunk> chunk = std::make_unique<StreamChunk>(
+			DataInfo{m_fileInfo.format.sampleRate, m_fileInfo.format.channelCount}
+		);
 
-		if(m_wavFile.remaining<uint16_t>() < size)
-			return {};
+		chunk->data.reserve(size);
 
-		for(uint32_t n = 0; n < size; ++n)
-			chunk.data.push_back(m_wavFile.parseShort());
+		if(auto remaining = m_wavFile.remaining<int16_t>(); remaining < size)
+			return nullptr;
+
+		for(uint32_t n = 0; n < size; ++n) {
+			const auto result = m_wavFile.parseShort();
+
+			chunk->data.push_back(result ? result() : static_cast<int16_t>(0));
+		}
 
 		return chunk;
 	}

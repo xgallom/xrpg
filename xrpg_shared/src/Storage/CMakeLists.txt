@@ -4,6 +4,7 @@ set(Storage
         ${src}/Level.cpp
         ${src}/Save.cpp
         ${src}/Serialize.cpp
+        ${src}/Settings.cpp
         ${src}/Storage.cpp
 
         PARENT_SCOPE

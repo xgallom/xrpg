@@ -24,3 +24,7 @@ void load(IArchive &ar, Map &d) { ar(d.size, d.data); }
 
 void save(OArchive &ar, const Level &d) { ar(d.map); }
 void load(IArchive &ar, Level &d) { ar(d.map); }
+
+void save(OArchive &ar, const Settings &d) { ar(d.audioLevelMaster, d.audioLevelMusic, d.audioLevelSound); }
+void load(IArchive &ar, Settings &d) { ar(d.audioLevelMaster, d.audioLevelMusic, d.audioLevelSound); }
+

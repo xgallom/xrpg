@@ -31,6 +31,7 @@ namespace OutputBuffer
 	void deinit()
 	{
 		Console::deinit();
+		Console::flush();
 	}
 
 	void clear()

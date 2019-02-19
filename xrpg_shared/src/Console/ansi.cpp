@@ -48,6 +48,8 @@ namespace Console
 
 		if(!enableDebug)
 			fclose(stderr);
+		else
+			get();
 
 		isInit = true;
 
