@@ -8,6 +8,7 @@
 #include "Save.h"
 #include "Level.h"
 #include "Settings.h"
+#include "Music.h"
 #include "Util/Result.h"
 
 namespace Storage
@@ -28,6 +29,10 @@ namespace Storage
 	namespace Settings {
 		bool store(const ::Settings &settings);
 		Result<::Settings> restore();
+	}
+
+	namespace Music {
+		std::string fileNameFor(::Music::Enum music);
 	}
 }
 

@@ -74,4 +74,43 @@ namespace Storage
 		bool store(const ::Settings &settings) { return ::Storage::store(fileName, settings); }
 		Result<::Settings> restore() { return Storage::restore<::Settings>(fileName); }
 	}
+
+	namespace Music {
+		static constexpr char path[] = "data/music/";
+		std::string fileNameFor(::Music::Enum music) {
+			static constexpr char fileNames[::Music::Size][15] = {
+				"wilderness.wav",
+				"rogue.wav",
+				"sisters.wav",
+				"spider.wav",
+				"jungle.wav",
+				"zakarum.wav",
+				"desert.wav",
+				"toru.wav",
+				"sanctuary.wav",
+				"crypt.wav",
+				"tombs.wav",
+				"monastery.wav",
+				"cave.wav",
+				"mesa.wav",
+				"leoric.wav",
+				"coda.wav",
+				"roger.wav",
+				"ancients.wav",
+				"docks.wav",
+				"fortress.wav",
+				"halls.wav",
+				"ice.wav",
+				"kurast.wav",
+				"maggot.wav",
+				"mephisto.wav",
+				"sewer.wav",
+				"siege.wav",
+				"title.wav",
+				"tristram.wav"
+			};
+
+			return std::string(path) + fileNames[music];
+		}
+	}
 }

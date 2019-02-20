@@ -13,7 +13,6 @@
 #include "Context/GlobalContext.h"
 
 #include <Audio/Audio.h>
-#include <Audio/AudioStream.h>
 #include <Graphics/OutputBuffer.h>
 #include <Run/Dispatch.h>
 #include <iostream>
@@ -36,11 +35,15 @@ namespace Run
 			}
 		}
 
-		return
+		bool wasSuccessful =
 			OutputBuffer::init({80, 25}, enableDebug) &&
 			Audio::init() &&
-			Audio::openDefaultStream() &&
-			Audio::startStream();
+			Audio::start();
+
+		if(wasSuccessful)
+			Audio::addMusic(Music::Title);
+
+		return wasSuccessful;
 	}
 
 	bool run()

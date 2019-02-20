@@ -2,7 +2,7 @@
 // Created by xgallom on 2/16/19.
 //
 
-#include "Audio/AudioStream.h"
+#include "AudioStream.h"
 
 #include "AudioCallback.h"
 #include "AudioThread.h"
@@ -64,18 +64,6 @@ namespace Audio
 
 		AudioContext::callbackData()->reset();
 
-		auto music = std::make_unique<Data::WavFileStream>("data/music/title.wav");
-
-		if(music->prepare()) {
-			AudioPlayer::addMusic(std::move(music));
-		}
-
-		music = std::make_unique<Data::WavFileStream>("data/music/docks.wav");
-
-		if(music->prepare()) {
-			AudioPlayer::addMusic(std::move(music));
-		}
-
 		if(const auto err = Pa_StartStream(AudioContext::stream()); err != paNoError) {
 			std::cerr
 				<< "Failed to start audio stream\n"
@@ -83,16 +71,6 @@ namespace Audio
 
 			return false;
 		}
-
-		std::vector<std::unique_ptr<Data::WavFileBuffer>> sounds;
-		sounds.emplace_back(std::make_unique<Data::WavFileBuffer>("data/sound/cursor/select.wav"));
-
-		if(!sounds[0]->prepare()) {
-			return true;
-		}
-
-		AudioPlayer::replaceSounds(std::move(sounds));
-		AudioPlayer::playSound(0);
 
 		return true;
 	}

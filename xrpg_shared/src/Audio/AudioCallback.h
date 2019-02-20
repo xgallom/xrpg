@@ -19,18 +19,9 @@ namespace Audio
 		std::bitset<MaxSounds> soundFlags = {};
 		std::array<Data::Buffer, MaxSounds> soundBuffers = {};
 
-		size_t nextFreeIndex() const;
-		void insert(size_t index, const Data::Buffer &data);
-		void remove(size_t index);
-
-		template<typename Func>
-		void forEach(Func f);
-
 		AudioContext::AudioLevels level;
 
-		inline void reset() {
-			soundFlags = {};
-		}
+		void reset();
 	};
 
 	namespace AudioCallback

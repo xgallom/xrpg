@@ -3,51 +3,34 @@
 //
 
 #include "Audio/Audio.h"
-#include "Audio/AudioStream.h"
-#include "Audio/Data/WavFile.h"
+#include "AudioStream.h"
+#include "AudioPlayer.h"
+#include "Storage/Storage.h"
 
 #include <iostream>
 #include <portaudio.h>
 
 namespace Audio
 {
-	bool init()
+	static bool initImplementation()
 	{
 		if(const auto err = Pa_Initialize(); err != paNoError) {
 			std::cerr
-				<< "Failed to initialize audio\n"
-				<< Pa_GetErrorText(err);
+					<< "Failed to initialize audio\n"
+					<< Pa_GetErrorText(err);
 
 			return false;
 		}
-
-		auto wavFile = Data::WavFile("data/music/title.wav");
-
-		if(!wavFile.isOpen()) {
-			std::cerr << "Error opening audio file\n";
-			return false;
-		}
-
-		const auto result = wavFile.parseHeader();
-
-		if(!result) {
-			std::cerr << "Error parsing audio file header\n";
-			return false;
-		}
-
-		const auto &fileInfo = result();
-
-		std::cerr
-			<< "Data size:        " << fileInfo.dataSize              << "\n"
-			<< "Audio format:     " << fileInfo.format.audioFormat    << "\n"
-			<< "Channel count:    " << fileInfo.format.channelCount   << "\n"
-			<< "Sample rate:      " << fileInfo.format.sampleRate     << "\n"
-			<< "Byte rate:        " << fileInfo.format.byteRate       << "\n"
-			<< "Block alignment:  " << fileInfo.format.blockAlign     << "\n"
-			<< "Bytes per sample: " << fileInfo.format.bytesPerSample << "\n"
-			;
 
 		return true;
+	}
+
+	bool init()
+	{
+		if(initImplementation())
+			return openDefaultStream();
+
+		return false;
 	}
 
 	void deinit()
@@ -59,5 +42,28 @@ namespace Audio
 				<< "Failed to deinitialize audio\n"
 				<< Pa_GetErrorText(err);
 		}
+	}
+
+	bool start()
+	{
+		return startStream();
+	}
+	bool stop()
+	{
+		return stopStream();
+	}
+
+	void addMusic(::Music::Enum music)
+	{
+		const auto fileName = Storage::Music::fileNameFor(music);
+
+		auto musicStream = std::make_unique<Data::WavFileStream>(fileName);
+
+		if(musicStream->prepare()) {
+			std::cerr << "Adding " << fileName << " to music playlist\n";
+			AudioPlayer::addMusic(std::move(musicStream));
+		}
+		else
+			std::cerr << "Failed to add " << fileName << " to music playlist\n";
 	}
 }
