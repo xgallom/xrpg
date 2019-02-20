@@ -23,7 +23,7 @@ namespace Audio
 		if(s_stream)
 			return false;
 
-		s_framesPerBuffer = 256;
+		s_framesPerBuffer = AudioContext::FramesPerBuffer;
 
 		AudioContext::callbackData()->level.apply(Storage::Settings::restore()());
 
@@ -48,9 +48,11 @@ namespace Audio
 
 		auto streamInfo = Pa_GetStreamInfo(s_stream);
 
+		std::cerr << "Stream buffer size: " << s_framesPerBuffer << " frames\n";
+
 		if(streamInfo) {
-			std::cerr << streamInfo->sampleRate << "\n";
-			std::cerr << streamInfo->outputLatency << "\n";
+			std::cerr << "Stream sample rate: " << streamInfo->sampleRate << "\n";
+			std::cerr << "Stream latency:     " << streamInfo->outputLatency << "\n";
 		}
 
 		return true;
@@ -86,7 +88,7 @@ namespace Audio
 		sounds.emplace_back(std::make_unique<Data::WavFileBuffer>("data/sound/cursor/select.wav"));
 
 		if(!sounds[0]->prepare()) {
-			return false;
+			return true;
 		}
 
 		AudioPlayer::replaceSounds(std::move(sounds));
@@ -102,21 +104,6 @@ namespace Audio
 		if(const auto err = Pa_StopStream(AudioContext::stream()); err != paNoError) {
 			std::cerr
 				<< "Failed to stop audio stream\n"
-				<< Pa_GetErrorText(err);
-
-			return false;
-		}
-
-		return true;
-	}
-
-	bool abortStream()
-	{
-		AudioThread::stop();
-
-		if(const auto err = Pa_AbortStream(AudioContext::stream()); err != paNoError) {
-			std::cerr
-				<< "Failed to abort audio stream\n"
 				<< Pa_GetErrorText(err);
 
 			return false;

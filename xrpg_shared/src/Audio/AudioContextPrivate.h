@@ -19,6 +19,7 @@ namespace Audio
 				SampleRate = 44100,
 				InputChannelCount = 0,
 				OutputChannelCount = 2;
+		static constexpr unsigned long FramesPerBuffer = 512;
 		static constexpr PaSampleFormat SampleFormat = 0x00000001; /* paFloat32 */
 
 		PaStream *&stream();

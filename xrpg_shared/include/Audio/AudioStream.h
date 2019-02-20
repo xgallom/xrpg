@@ -10,7 +10,6 @@ namespace Audio
 	bool openDefaultStream();
 	bool startStream();
 	bool stopStream();
-	bool abortStream();
 	bool closeStream();
 
 	unsigned long framesPerAudioBuffer();

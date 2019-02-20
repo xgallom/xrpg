@@ -47,6 +47,6 @@ namespace Audio::Data
 
 	uint32_t WavFileStream::chunkSize() const
 	{
-		return m_fileInfo.format.channelCount * framesPerAudioBuffer();
+		return static_cast<uint32_t>(m_fileInfo.format.channelCount * framesPerAudioBuffer());
 	}
 }
