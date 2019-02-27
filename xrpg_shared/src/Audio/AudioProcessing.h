@@ -27,12 +27,19 @@ namespace Audio
 				right = 0.0f;
 		};
 
-		float level(std::atomic<int> &value);
+		struct AudioLevels {
+			float
+				master,
+				music,
+				sound;
+		};
+
+		AudioLevels levels(std::atomic<int> &master, std::atomic<int> &music, std::atomic<int> &sound);
 
 		void outputSilence(float *output, unsigned long frameCount);
-		void outputMusic(float *output, unsigned long frameCount, float level, const Data::StreamChunk &streamChunk);
-		bool outputSoundMono(float *output, unsigned long frameCount, float level, Data::Buffer &soundBuffer);
-		bool outputSoundStereo(float *output, unsigned long frameCount, float level, Data::Buffer &soundBuffer);
+		void outputMusic(float *output, unsigned long frameCount, float levelValue, const Data::StreamChunk &streamChunk);
+		bool outputSoundMono(float *output, unsigned long frameCount, float levelValue, Data::Buffer &soundBuffer);
+		bool outputSoundStereo(float *output, unsigned long frameCount, float levelValue, Data::Buffer &soundBuffer);
 	}
 }
 

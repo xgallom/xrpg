@@ -46,14 +46,21 @@ namespace Audio
 			auto &audioStream = AudioThread::getAudioStream();
 			auto &audioBuffer = AudioThread::getAudioBuffer();
 
-			const auto masterLevel = Processing::level(audioData.level.master);
-			const auto musicLevel = masterLevel * Processing::level(audioData.level.music);
-			const auto soundLevel = masterLevel * Processing::level(audioData.level.sound);
+			const auto levels = Processing::levels(
+				audioData.level.master,
+				audioData.level.music,
+				audioData.level.sound
+			);
+
+			std::cerr
+				<< "Master: " << levels.master << "\n"
+				<< "Music:  " << levels.music  << ", " << levels.music * MaxMusicTracks << "\n"
+				<< "Sound:  " << levels.sound  << ", " << levels.sound * MaxSounds      << "\n";
 
 			const auto musicResult = audioStream.tryAcquire();
 
 			if(musicResult) {
-				Processing::outputMusic(output, frameCount, musicLevel, *musicResult());
+				Processing::outputMusic(output, frameCount, levels.music, *musicResult());
 				audioStream.release();
 			}
 			else
@@ -61,15 +68,15 @@ namespace Audio
 
 			updateAudioData(audioData, audioBuffer);
 
-			forEach(audioData, [&audioData, output, frameCount, soundLevel](Data::Buffer &sound, size_t index) {
+			forEach(audioData, [&audioData, output, frameCount, levels](Data::Buffer &sound, size_t index) {
 				switch(sound.dataInfo.channelCount) {
 					case Data::ChannelCountMono:
-						if(Processing::outputSoundMono(output, frameCount, soundLevel, sound))
+						if(Processing::outputSoundMono(output, frameCount, levels.sound, sound))
 							remove(audioData, index);
 						break;
 
 					case Data::ChannelCountStereo:
-						if(Processing::outputSoundStereo(output, frameCount, soundLevel, sound))
+						if(Processing::outputSoundStereo(output, frameCount, levels.sound, sound))
 							remove(audioData, index);
 						break;
 

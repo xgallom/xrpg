@@ -13,15 +13,46 @@ namespace Audio::Processing
 		return {s.left * f, s.right * f};
 	}
 
-	float level(std::atomic<int> &value)
+	static float level(std::atomic<int> &value)
 	{
 		return static_cast<float>(value.load(std::memory_order_relaxed)) / 100;
 	}
 
+	AudioLevels levels(std::atomic<int> &master, std::atomic<int> &music, std::atomic<int> &sound)
+	{
+		const auto
+			masterLevel = level(master),
+			musicLevel = level(music),
+			soundLevel = level(sound);
+
+		const auto
+			musicRemaining = 1.0f - musicLevel,
+			soundRemaining = 1.0f - soundLevel;
+
+		const auto
+			musicRemainingModifier = musicRemaining * MaxMusicTracks,
+			soundRemainingModifier = soundRemaining * MaxSounds     ;
+
+		const auto
+			musicModifier = 1.0f + soundRemainingModifier / MaxMusicTracks,
+			soundModifier = 1.0f + musicRemainingModifier / MaxSounds     ;
+
+		auto normalizedMaster = masterLevel / ChannelCount;
+
+		const auto
+			computedMusicLevel = musicLevel * musicModifier * normalizedMaster,
+			computedSoundLevel = soundLevel * soundModifier * normalizedMaster;
+
+		return {
+				masterLevel,
+				computedMusicLevel,
+				computedSoundLevel
+		};
+	}
+
 	static float normalize(int16_t sample)
 	{
-		static constexpr auto Level = 1.0f / ChannelCount;
-		return Level * static_cast<float>(sample) / std::numeric_limits<int16_t>::max();
+		return static_cast<float>(sample) / std::numeric_limits<int16_t>::max();
 	}
 
 	static Sample normalize(int16_t left, int16_t right)
@@ -49,25 +80,25 @@ namespace Audio::Processing
 			outputSample(output, frameCount, NoSample);
 	}
 
-	void outputMusic(float *output, unsigned long frameCount, float level, const Data::StreamChunk &streamChunk)
+	void outputMusic(float *output, unsigned long frameCount, float levelValue, const Data::StreamChunk &streamChunk)
 	{
 		for(auto i = streamChunk.data.cbegin(), end = streamChunk.data.cend(); i != end;) {
 			const auto left  = *i++;
 			const auto right = *i++;
 
-			outputSample(output, frameCount, normalize(left, right) * level);
+			outputSample(output, frameCount, normalize(left, right) * levelValue);
 		}
 
 		outputSilence(output, frameCount);
 	}
 
-	bool outputSoundMono(float *output, unsigned long frameCount, float level, Data::Buffer &soundBuffer)
+	bool outputSoundMono(float *output, unsigned long frameCount, float levelValue, Data::Buffer &soundBuffer)
 	{
 		for(; soundBuffer.index != soundBuffer.data.end; ++soundBuffer.index) {
 			if(!frameCount)
 				return false;
 
-			const auto sample = normalize(*soundBuffer.index) * level;
+			const auto sample = normalize(*soundBuffer.index) * levelValue;
 
 			// Resample 22050 -> 44100
 			addSample(output, frameCount, {sample, sample});
@@ -77,14 +108,14 @@ namespace Audio::Processing
 		return true;
 	}
 
-	bool outputSoundStereo(float *output, unsigned long frameCount, float level, Data::Buffer &soundBuffer)
+	bool outputSoundStereo(float *output, unsigned long frameCount, float levelValue, Data::Buffer &soundBuffer)
 	{
 		for(; soundBuffer.index < soundBuffer.data.end; ++soundBuffer.index) {
 			if(!frameCount)
 				return false;
 
-			const auto left  = normalize(*soundBuffer.index++) * level;
-			const auto right = normalize(*soundBuffer.index)   * level;
+			const auto left  = normalize(*soundBuffer.index++) * levelValue;
+			const auto right = normalize(*soundBuffer.index)   * levelValue;
 
 			// Resample 22050 -> 44100
 			addSample(output, frameCount, {left, right});
