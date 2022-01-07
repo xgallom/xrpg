@@ -8,10 +8,10 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    xrpgengineworker.cpp
 
 HEADERS += \
-    mainwindow.h
+    xrpgengineworker.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

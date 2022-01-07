@@ -1,4 +1,5 @@
-QT += gui
+QT += gui opengl \
+    widgets
 
 TEMPLATE = lib
 CONFIG += staticlib
@@ -10,10 +11,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    xrpgshared.cpp
+    data/leveldata.cpp \
+    data/levelsdata.cpp \
+    system/engine.cpp \
+    system/engineworker.cpp \
+    system/mainwindow.cpp
 
 HEADERS += \
-    xrpgshared.h
+    data/KeyEvent.h \
+    data/leveldata.h \
+    data/levelsdata.h \
+    system/engine.h \
+    system/engineworker.h \
+    system/mainwindow.h
 
 # Default rules for deployment.
 unix {
