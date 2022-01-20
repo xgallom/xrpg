@@ -14,19 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-cmake_minimum_required(VERSION 3.21)
-project(xrpg)
+file(GLOB_RECURSE files "src/*.cpp" "src/*.c")
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
--Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic \
--Wold-style-cast -Wcast-align -Wunused -Wpedantic \
--Wconversion -Wsign-conversion -Wformat=2 \
-")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} \
--march=native -O3 -finline-functions -m64 -funroll-loops \
-")
-
-add_subdirectory(sdl2)
-add_subdirectory(xrpg-shared)
-add_subdirectory(xrpg)
+add_executable(xrpg ${files})
+target_link_libraries(xrpg PUBLIC xrpg-shared)

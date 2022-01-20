@@ -14,19 +14,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-cmake_minimum_required(VERSION 3.21)
-project(xrpg)
+find_package(SDL2 REQUIRED)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
--Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic \
--Wold-style-cast -Wcast-align -Wunused -Wpedantic \
--Wconversion -Wsign-conversion -Wformat=2 \
-")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} \
--march=native -O3 -finline-functions -m64 -funroll-loops \
-")
+add_library(xrpg-sdl2 INTERFACE)
+target_include_directories(xrpg-sdl2 INTERFACE ${SDL2_INCLUDE_DIRS})
+target_link_libraries(xrpg-sdl2 INTERFACE ${SDL2_LIBRARIES})
 
-add_subdirectory(sdl2)
-add_subdirectory(xrpg-shared)
-add_subdirectory(xrpg)
+add_definitions(-DSDL_MAIN_HANDLED)
