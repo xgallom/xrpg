@@ -18,4 +18,4 @@ file(GLOB_RECURSE files "src/*.cpp" "src/*.c")
 
 add_library(xrpg-shared STATIC ${files})
 target_include_directories(xrpg-shared PUBLIC include)
-target_link_libraries(xrpg-shared PUBLIC xrpg-sdl2)
+target_link_libraries(xrpg-shared PUBLIC xrpg-sdl2 xrpg-sdl2-image xrpg-sdl2-mixer xrpg-cereal)

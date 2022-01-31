@@ -19,25 +19,34 @@
 
 #include "init.h"
 #include <SDL.h>
+#include <SDL_image.h>
 
 namespace run {
-    void start(engine::Context &context)
+/*    void Start::update()
     {
-        const auto renderer = context.renderer;
-        SDL_SetRenderDrawColor(renderer, 255, 50, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
-
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            switch (e.type) {
-                case SDL_QUIT:
-                case SDL_KEYDOWN:
-                case SDL_MOUSEBUTTONDOWN:
-                    context.activeId = engine::EngineRunHandlerId::Quit;
-            }
+        for (const auto &event : events.events) {
+//            if (event.type == SDL_QUIT)
+//                activeId = engine::EngineRunHandlerId::Quit;
         }
+        events.events.clear();
     }
 
-    void quit(engine::Context &) {}
+    void Start::render()
+    {
+        SDL_SetRenderDrawColor(renderer, 230, 120, 230, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer);
+
+        auto image = IMG_Load("assets/img/glyphs-16x16.png");
+        if (!image) {
+            printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
+        } else {
+            auto texture = SDL_CreateTextureFromSurface(renderer, image);
+            SDL_FreeSurface(image);
+            SDL_Rect src{64, 32, 32, 32}, dst{0, 0, 64, 64};
+            SDL_RenderCopy(renderer, texture, &src, &dst);
+            SDL_DestroyTexture(texture);
+        }
+
+        SDL_RenderPresent(renderer);
+    }*/
 }

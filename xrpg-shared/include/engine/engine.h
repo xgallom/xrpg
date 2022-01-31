@@ -20,8 +20,13 @@
 #ifndef XRPG_XRPG_SHARED_INCLUDE_ENGINE_ENGINE_H
 #define XRPG_XRPG_SHARED_INCLUDE_ENGINE_ENGINE_H
 
-#include "context.h"
-#include "init.h"
-#include "run.h"
+#include "audio.h"
+#include "renderer.h"
+#include "events.h"
+
+struct Engine : engine::EngineData {
+    ~Engine();
+    bool init();
+};
 
 #endif //XRPG_XRPG_SHARED_INCLUDE_ENGINE_ENGINE_H

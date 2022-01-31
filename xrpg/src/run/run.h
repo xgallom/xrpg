@@ -23,10 +23,6 @@
 #include "init.h"
 
 namespace run {
-    static constexpr engine::RunHandler XrpgRunHandlers[] = {
-            start,
-            quit,
-    };
 }
 
 #endif //XRPG_XRPG_SRC_RUN_RUN_H

@@ -19,14 +19,25 @@ project(xrpg)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
--Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic \
+-Wall -Wextra -Wnon-virtual-dtor -pedantic \
 -Wold-style-cast -Wcast-align -Wunused -Wpedantic \
 -Wconversion -Wsign-conversion -Wformat=2 \
+-fno-exceptions -fno-rtti \
+-march=native -finline-functions -m64 -funroll-loops \
+")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
+-Og \
 ")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} \
--march=native -O3 -finline-functions -m64 -funroll-loops \
+-O3 \
 ")
 
+add_definitions(-DSDL_MAIN_HANDLED)
+
 add_subdirectory(sdl2)
+add_subdirectory(sdl2-image)
+add_subdirectory(sdl2-mixer)
+add_subdirectory(cereal)
+add_subdirectory(xrpg-assets)
 add_subdirectory(xrpg-shared)
 add_subdirectory(xrpg)

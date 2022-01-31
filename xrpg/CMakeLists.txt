@@ -18,3 +18,4 @@ file(GLOB_RECURSE files "src/*.cpp" "src/*.c")
 
 add_executable(xrpg ${files})
 target_link_libraries(xrpg PUBLIC xrpg-shared)
+add_dependencies(xrpg xrpg-assets)

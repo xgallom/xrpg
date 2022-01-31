@@ -19,5 +19,3 @@ find_package(SDL2 REQUIRED)
 add_library(xrpg-sdl2 INTERFACE)
 target_include_directories(xrpg-sdl2 INTERFACE ${SDL2_INCLUDE_DIRS})
 target_link_libraries(xrpg-sdl2 INTERFACE ${SDL2_LIBRARIES})
-
-add_definitions(-DSDL_MAIN_HANDLED)

@@ -23,8 +23,15 @@
 #include <engine/engine.h>
 
 namespace run {
-    void start(engine::Context &context);
-    void quit(engine::Context &context);
+/*    struct Start : EngineRunState {
+        void update();
+        void render();
+    };
+
+    struct Quit : EngineRunState {
+        void update();
+        void render();
+    };*/
 }
 
 #endif //XRPG_XRPG_SRC_RUN_INIT_H
